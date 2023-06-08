@@ -45,7 +45,8 @@ int main(){
    // Insert 10 at the beginning.
    Insert_at_Head(&head, 10);
   // Insert_at_Head(&head, 40);
-   //Insert_at_Head(&head, 50);  
+   //Insert_at_Head(&head, 50);
+    Insert_at_Head(&head, 60);
 cout<<"Doubly linked list is as follows: "<<endl;
    display(head);
     return 0;
