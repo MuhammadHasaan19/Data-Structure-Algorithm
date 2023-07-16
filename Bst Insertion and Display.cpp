@@ -63,47 +63,33 @@ class BST
 		return FindMaxNode(node->right_child);
 	}
 
-	Node* DeleteNode(Node* node, int value)
+	Node* deleteNode(Node* root, int key)
 	{
-		if (node == nullptr)
-		{
-			return node;
-		}
-		else if (value < node->data)
-		{
-			node->left_child = DeleteNode(node->left_child, value);
-		}
-		else if (value > node->data)
-		{
-			node->right_child = DeleteNode(node->right_child, value);
-		}
-		else
-		{
-			if (node->left_child == nullptr && node->right_child == nullptr)
-			{
-				delete node;
-				node = nullptr;
-			}
-			else if (node->left_child == nullptr)
-			{
-				Node* temp = node;
-				node = node->right_child;
-				delete temp;
-			}
-			else if (node->right_child == nullptr)
-			{
-				Node* temp = node;
-				node = node->left_child;
-				delete temp;
-			}
-			else
-			{
-				Node* temp = FindMinNode(node->right_child);
-				node->data = temp->data;
-				node->right_child = DeleteNode(node->right_child, temp->data);
-			}
-		}
-		return node;
+	    if (root == nullptr)
+	        return nullptr;
+	
+	    if (key < root->data)
+	        root->left_child = deleteNode(root->left_child, key);
+	    else if (key > root->data)
+	        root->right_child = deleteNode(root->right_child, key);
+	    else {
+	        if (root->left_child == nullptr) {
+	            Node* temp = root->right_child;
+	            delete root;
+	            return temp;
+	        }
+	        else if (root->right_child == nullptr) {
+	            Node* temp = root->left_child;
+	            delete root;
+	            return temp;
+	        }
+	
+	        Node* minNode = FindMinNode(root->right_child);
+	        root->data = minNode->data;
+	        root->right_child = deleteNode(root->right_child, minNode->data);
+	    }
+	
+	    return root;
 	}
 
 public:
@@ -196,18 +182,6 @@ public:
 		}
 	}
 
-	void DeleteNode(int value)
-	{
-		if (isEmpty())
-		{
-			cout << "Tree is empty. Cannot delete node.";
-		}
-		else
-		{
-			root = DeleteNode(root, value);
-		}
-	}
-
 	int FindMinValue()
 	{
 		if (isEmpty())
@@ -234,6 +208,11 @@ public:
 			Node* maxNode = FindMaxNode(root);
 			return maxNode->data;
 		}
+	}
+
+	void DeleteValue(int value)
+	{
+	    root = deleteNode(root, value);
 	}
 };
 
@@ -264,8 +243,12 @@ int main()
 	cout << "\nMinimum value: " << BT.FindMinValue();
 	cout << "\nMaximum value: " << BT.FindMaxValue();
 
-	BT.DeleteNode(15);
-	cout << "\n\nAfter deleting 15, InOrder value: ";
+	cout << "\nDeleting value 7 and 20";
+
+	BT.DeleteValue(7);
+	BT.DeleteValue(20);
+
+	cout << "\nInOrder value after deletion: ";
 	BT.Print_Inorder();
 
 	cout << endl;
